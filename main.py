@@ -35,11 +35,14 @@ class TwitterThreadReader(object):
         from selenium.webdriver.support import expected_conditions as EC
 
         from selenium.webdriver.chrome.service import Service
+        from selenium.webdriver.chrome.options import Options
 
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")  
 
         service = Service('./chromedriver')
         service.start()
-        driver = webdriver.Remote(service.service_url)
+        driver = webdriver.Remote(service.service_url, desired_capabilities=chrome_options.to_capabilities())
         driver.implicitly_wait(10)
         driver.get("https://twitter.com/{user}/status/{tweet_id}".format(user=self.USER.screen_name, tweet_id=self.TweetID))
         try:
